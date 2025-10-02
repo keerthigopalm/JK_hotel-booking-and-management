@@ -27,7 +27,7 @@ public class RoomService implements IRoomService {
        Response response = new Response();
 
         try{
-          String imageUrl =  "uploads/";
+          String imageUrl = ImgService.saveImageToUpload(photo);
           Room room = new Room();
           room.setRoomPhotoUrl(imageUrl);
           room.setRoomType(roomType);

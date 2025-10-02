@@ -6,7 +6,7 @@ export default class ApiService{
     static getHeader(){
         const token = localStorage.getItem("token");
         return{
-            Autherization: `bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         };
     }
@@ -14,7 +14,7 @@ export default class ApiService{
     /**AUTH */
 
     /* This register a new user */
-    static async registerUser(registeration){
+    static async registerUser(registration){
         const response = await axios.post(`${this.BASE_URL}/auth/register`, registration)
         return response.data
     }
@@ -38,7 +38,7 @@ export default class ApiService{
 
    static async getUserProfile(){
     const response = await axios.get(`${this.BASE_URL}/users/get-logged-in-profile-info`,{
-        header : this.getHeader()
+        headers : this.getHeader()
     })
     return response.data
    }
@@ -46,7 +46,7 @@ export default class ApiService{
    /* This is the get a single user */
    static async getUser(userId){
     const response = await axios.get(`${this.BASE_URL}/users/get-by-id/${userId}`,{
-        headers : this.getHeaders()
+        headers : this.getHeader()
     })
     return response.data
    }
@@ -54,7 +54,7 @@ export default class ApiService{
    /* This is to get user booking by the user id */
    static async getUserBookings(userId){
     const response = await axios.get(`${this.BASE_URL}/get-user-booking/${userId}`,{
-        headers : this.getHeaders()
+        headers : this.getHeader()
     })
     return response.data
    }
@@ -69,11 +69,11 @@ export default class ApiService{
 
    /** ROOM */
    /* This adds a new room to the database */
-   static async addRoom(fromData){
+   static async addRoom(formData){
     const result = await axios.post(`${this.BASE_URL}/rooms/add`, formData,{
         headers: {
             ...this.getHeader(),
-            'Content-Type' : 'multipart/from-data'
+            'Content-Type' : 'multipart/form-data'
         }
     });
     return result.data
@@ -119,7 +119,7 @@ export default class ApiService{
 
    /* This update a room  */
    static async updateRoom(roomId,formData){
-    const result = await axios.put(`${this.BASE_URL}/rooms/updat/${roomId}`,formData,{
+    const result = await axios.put(`${this.BASE_URL}/rooms/update/${roomId}`,formData,{
         headers: {
             ...this.getHeader(),
             'Content-type' : 'multipart/form-data'
@@ -133,15 +133,15 @@ export default class ApiService{
    static async bookRoom(roomId,userId,booking){
     console.log("USER ID IS: "+ userId)
 
-    const response = await axios.post(`${this.BASE_URL}/booking/book-room/${roomId}/${userId}`,booking, {
+    const response = await axios.post(`${this.BASE_URL}/booking/booking-room/${roomId}/${userId}`,booking, {
         headers : this.getHeader()
         })
-        return result.data
+        return response.data
    }
 
    /* This get all booking from the data base */
    static async getAllBooking(){
-    const result = await axios.get(`${this.BASE_URL}/bookings/all`,{
+    const result = await axios.get(`${this.BASE_URL}/booking/all`,{
         headers : this.getHeader()
     })
     return result.data
@@ -149,13 +149,13 @@ export default class ApiService{
 
     /* This get booking by the confirmation code */
      static async getBookingByConfirmationCode(bookingCode) {
-        const result = await axios.get(`${this.BASE_URL}/bookings/get-by-confirmation-code/${bookingCode}`)
+        const result = await axios.get(`${this.BASE_URL}/booking/get-by-confirmation-code/${bookingCode}`)
         return result.data
     }
 
      /* This is the  to cancel user booking */
     static async cancelBooking(bookingId) {
-        const result = await axios.delete(`${this.BASE_URL}/bookings/cancel/${bookingId}`, {
+        const result = await axios.delete(`${this.BASE_URL}/booking/cancel/${bookingId}`, {
             headers: this.getHeader()
         })
         return result.data
